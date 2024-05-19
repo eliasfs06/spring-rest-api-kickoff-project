@@ -15,17 +15,14 @@ public class RegisterDTO {
     private String password;
     @NotBlank(message = "{name.not.blank}")
     private String name;
-    private Date birthDate;
     @NotBlank(message = "{email.not.blank}")
     @Email(message = "{email.not.valid}")
     private String email;
-
     private UserRole userRole;
 
     public Person toPerson(){
         Person person = new Person();
         person.setName(this.getName());
-        person.setBirthDate(this.getBirthDate());
         person.setEmail(this.getEmail());
 
         return person;
@@ -61,14 +58,6 @@ public class RegisterDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
     }
 
     public String getEmail() {

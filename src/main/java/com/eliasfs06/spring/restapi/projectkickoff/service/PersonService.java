@@ -6,7 +6,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PersonService extends GenericService<Person>{
-    public PersonService(GenericRepository<Person> repository) {
-        super(repository);
-    }
+
 }

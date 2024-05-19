@@ -2,6 +2,9 @@ package com.eliasfs06.spring.restapi.projectkickoff.restController;
 
 import com.eliasfs06.spring.restapi.projectkickoff.model.dto.AuthenticationDTO;
 import com.eliasfs06.spring.restapi.projectkickoff.model.dto.RegisterDTO;
+import com.eliasfs06.spring.restapi.projectkickoff.model.exceptionsHandler.BusinessException;
+import com.eliasfs06.spring.restapi.projectkickoff.service.helper.MessageCode;
+import com.eliasfs06.spring.restapi.projectkickoff.service.helper.MessageHelper;
 import com.eliasfs06.spring.restapi.projectkickoff.service.security.AuthenticationService;
 import com.eliasfs06.spring.restapi.projectkickoff.service.UserService;
 import jakarta.validation.Valid;
@@ -21,6 +24,8 @@ public class AuthenticationController {
     private UserService userService;
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private MessageHelper messageHelper;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
@@ -31,11 +36,14 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterDTO> register(@RequestBody @Valid RegisterDTO userData){
-        userService.registerUser(userData);
-        return new ResponseEntity<>(userData, HttpStatus.CREATED);
+    public ResponseEntity<String> register(@RequestBody @Valid RegisterDTO userData){
+        try {
+            userService.registerUser(userData);
+        } catch (BusinessException e){
+            return new ResponseEntity<>(messageHelper.getMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(MessageCode.DEFAULT_SUCCESS_MSG, HttpStatus.CREATED);
     }
-
 }
 
 
